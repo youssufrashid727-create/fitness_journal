@@ -18,5 +18,25 @@ class User(db.Model):
 
     birth_date = db.Column(db.Date)
 
+    workouts = db.relationship("Workout", backref="user", lazy=True)
+
+class Workout(db.Model):
+    __tablename__ = "workouts"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    date = db.Column(db.Date, nullable=False)
+
+    duration_min = db.Column(db.Integer, nullable=False)
+
+    notes = db.Column(db.Text)
+
     def __repr__(self):
-        return f"<User {self.username}>"
+        return f"<Workout {self.id}>"
+

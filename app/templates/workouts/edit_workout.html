@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Workout
+{% endblock %}
+
+{% block content %}
+
+<h2>Edit Workout</h2>
+
+<form method="POST">
+
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.date.label }}
+        {{ form.date(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.duration_min.label }}
+        {{ form.duration_min(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.notes.label }}
+        {{ form.notes(class="form-control") }}
+    </div>
+
+    {{ form.submit(value="Update Workout", class="btn btn-primary") }}
+
+</form>
+
+{% endblock %}

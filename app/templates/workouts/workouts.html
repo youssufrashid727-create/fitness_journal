@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+Workouts
+{% endblock %}
+
+{% block content %}
+
+<h2>Add Workout</h2>
+
+<form method="POST">
+
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.date.label }}
+        {{ form.date(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.duration_min.label }}
+        {{ form.duration_min(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.notes.label }}
+        {{ form.notes(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+
+</form>
+
+<hr>
+
+<h3>Your Workouts</h3>
+
+{% if workouts %}
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for workout in workouts %}
+
+        <tr>
+            <td>{{ workout.date }}</td>
+            <td>{{ workout.duration_min }} min</td>
+            <td>{{ workout.notes }}</td>
+
+            <td>
+                <a href="{{ url_for('workout.edit_workout', workout_id=workout.id) }}"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <a href="{{ url_for('workout.delete_workout', workout_id=workout.id) }}"
+                   class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<p>No workouts yet.</p>
+
+{% endif %}
+
+{% endblock %}

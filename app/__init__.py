@@ -1,6 +1,8 @@
 from flask import Flask
 from config import Config
 from app.extensions import db
+from app.workouts.routes import workout_bp
+
 
 
 def create_app():
@@ -17,6 +19,8 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp, url_prefix="/api")
+    app.register_blueprint(workout_bp)
+    
 
     # Import models after initializing db
     from app import models
