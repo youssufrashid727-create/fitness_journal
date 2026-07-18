@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import DateField, IntegerField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
+from wtforms import DateField, IntegerField, TextAreaField, SubmitField, SelectField
 
 
 class WorkoutForm(FlaskForm):
@@ -22,3 +23,17 @@ class WorkoutForm(FlaskForm):
     notes = TextAreaField("Notes")
 
     submit = SubmitField("Save Workout")
+
+    workout_type = SelectField(
+    "Workout Type",
+    choices=[
+        ("Cardio", "Cardio"),
+        ("Strength", "Strength"),
+        ("Running", "Running"),
+        ("Cycling", "Cycling"),
+        ("Swimming", "Swimming"),
+        ("Yoga", "Yoga"),
+        ("Other", "Other")
+    ],
+    validators=[DataRequired()]
+)

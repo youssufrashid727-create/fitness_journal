@@ -18,6 +18,11 @@ Edit Workout
     </div>
 
     <div class="mb-3">
+    {{ form.workout_type.label }}
+    {{ form.workout_type(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
         {{ form.duration_min.label }}
         {{ form.duration_min(class="form-control") }}
     </div>

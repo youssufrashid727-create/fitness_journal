@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, session
+
 from app.workouts.forms import WorkoutForm
 from app.models import Workout
 from app.extensions import db
 from app.auth.decorators import login_required
-
+from flask import Blueprint, render_template, redirect, url_for, flash, session, request
 
 workout_bp = Blueprint("workout", __name__)
 
@@ -19,6 +19,7 @@ def workouts():
         workout = Workout(
             user_id=session["user_id"],
             date=form.date.data,
+            workout_type=form.workout_type.data,
             duration_min=form.duration_min.data,
             notes=form.notes.data
         )
@@ -27,18 +28,29 @@ def workouts():
         db.session.commit()
 
         flash("Workout added successfully!", "success")
-
         return redirect(url_for("workout.workouts"))
 
-    workouts = Workout.query.filter_by(
-        user_id=session["user_id"]
-    ).all()
+    if form.is_submitted():
+        print(form.errors)
+
+    
+    search = request.args.get("search", "")
+
+    query = Workout.query.filter_by(user_id=session["user_id"])
+
+    if search:
+        query = query.filter(
+            Workout.workout_type.ilike(f"%{search}%")
+        )
+
+    workouts = query.all()
 
     return render_template(
-        "workouts/workouts.html",
-        form=form,
-        workouts=workouts
-    )
+    "workouts/workouts.html",
+    form=form,
+    workouts=workouts,
+    search=search
+)
 
 
 @workout_bp.route("/workouts/edit/<int:workout_id>", methods=["GET", "POST"])
@@ -56,13 +68,13 @@ def edit_workout(workout_id):
     if form.validate_on_submit():
 
         workout.date = form.date.data
+        workout.workout_type = form.workout_type.data
         workout.duration_min = form.duration_min.data
         workout.notes = form.notes.data
 
         db.session.commit()
 
         flash("Workout updated!", "success")
-
         return redirect(url_for("workout.workouts"))
 
     return render_template(

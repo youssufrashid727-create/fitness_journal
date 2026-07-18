@@ -35,6 +35,8 @@ class Workout(db.Model):
 
     duration_min = db.Column(db.Integer, nullable=False)
 
+    workout_type = db.Column(db.String(50), nullable=False)
+
     notes = db.Column(db.Text)
 
     def __repr__(self):
